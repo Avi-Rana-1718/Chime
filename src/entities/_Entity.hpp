@@ -11,7 +11,6 @@ class Entity : public Animated
 {
 
 public:
-    std::map<std::string, std::vector<sf::Texture>> animationMap;
 
     std::string tag;
     int id;
@@ -24,7 +23,6 @@ public:
 
     bool hatesPlayer;
     bool isProjectile;
-    bool honour;
     bool isInvulnerable;
 
     CSprite *sprite = NULL;
@@ -52,15 +50,15 @@ Entity::Entity()
     id = totalEntities++;
     layer = 1;
 
-    direction = "";
+    direction = 1;
     health = 1;
     actionTag = "idle";
-    rotate=1;
 
     hatesPlayer=false;
     isProjectile = false;
-    honour=false;
     isInvulnerable=false;
+
+    currentFrame=0;
 
     scale=1;
 
@@ -82,12 +80,20 @@ void Entity::update(float time)
 
 void Entity::sAnimate()
 {
+    sprite->setScale(sf::Vector2f(direction * scale, scale));  
 
-    if(direction=="right") {
-        rotate=1;
-    } else if(direction=="left") {
-        rotate=-1;
+    // std::cout<<actionTag<<std::endl;
+
+    if (currentFrame < animationMap[actionTag].size() && gameTime.getElapsedTime().asSeconds() > animationTimer + frameDelay)
+    {
+        sprite->setTexture(animationMap[actionTag][currentFrame++]);
+        animationTimer = gameTime.getElapsedTime().asSeconds();
+        return;
     }
-
-    
+    else if (currentFrame >= animationMap[actionTag].size())
+    {
+        animationTimer = gameTime.getElapsedTime().asSeconds();
+        currentFrame = 0;
+        actionTag = "idle";
+    }
 }

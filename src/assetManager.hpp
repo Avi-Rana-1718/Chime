@@ -9,21 +9,21 @@ class AssetManager
 {
 
 public:
-    void addTexture(std::string);
+    void addTexture(std::string name,std::string path, sf::IntRect rec);
     void addFont(std::string);
     void addSound(std::string);
 };
 
-void AssetManager::addTexture(std::string path)
+void AssetManager::addTexture(std::string name, std::string path, sf::IntRect rec)
 {
         sf::Texture texture;
 
-        if (!texture.loadFromFile("assets/sprites/" + path))
+        if (!texture.loadFromFile("assets/sprites/" + path, rec))
         {
             std::cout << "ASSET: Not found - " << path << " not found";
         }
 
-        m_textures[path] = texture;
+        m_textures[name] = texture;
 }
 
 void AssetManager::addFont(std::string path)

@@ -6,6 +6,7 @@ class Animated {
     float animationTimer;
     int currentFrame;
 
-    std::string direction;
-    int rotate;
+    int direction;
+
+    std::map<std::string, std::vector<sf::Texture>> animationMap;
 };

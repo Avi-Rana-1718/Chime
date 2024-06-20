@@ -34,18 +34,32 @@ GameEngine::GameEngine()
         std::cout<<"ICON: NOT FOUND";
     }
 
-    assets.addTexture("player.png");
+    assets.addTexture("player_idle", "player.png", sf::IntRect(45, 40, 150, 155));
+    assets.addTexture("player_move0", "player.png", sf::IntRect(45, 230, 150, 155));
+    assets.addTexture("player_move1", "player.png", sf::IntRect(235, 230, 150, 155));
+    assets.addTexture("player_move2", "player.png", sf::IntRect(425, 230, 150, 155));
+    assets.addTexture("player_move3", "player.png", sf::IntRect(615, 230, 150, 155));
+    assets.addTexture("player_move4", "player.png", sf::IntRect(805, 230, 150, 155));
+    assets.addTexture("player_move5", "player.png", sf::IntRect(995, 230, 150, 155));
+    assets.addTexture("player_attack0", "player.png", sf::IntRect(45, 415, 150, 155));
+    assets.addTexture("player_attack1", "player.png", sf::IntRect(235, 415, 150, 155));
+    assets.addTexture("player_attack2", "player.png", sf::IntRect(425, 415, 150, 155));
+    assets.addTexture("player_attack3", "player.png", sf::IntRect(615, 415, 150, 155));
+    assets.addTexture("player_attack4", "player.png", sf::IntRect(805, 415, 150, 155));
+    assets.addTexture("player_attack5", "player.png", sf::IntRect(995, 415, 150, 155));
+   
 
     assets.addFont("hack.ttf");
     
     window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
-
     scenes["default"] = new Scene_default;
 
     currentScene = scenes["default"];
     window.setFramerateLimit(144);
     isRunning = true;
-    totalFrames = 0;
+
+    calculatedFPS=0;
+    frames = 0;
 
     view.setCenter(sf::Vector2f(WINDOW_W / 2, WINDOW_H / 2));
     view.setSize(sf::Vector2f(WINDOW_W, WINDOW_H));
@@ -65,11 +79,19 @@ void GameEngine::run()
 {
     currentScene->init();
 
+    int frames=0;
+
     while (isRunning)
     {
 
         sf::Time time = Clock.restart();
-        totalFrames++;
+        frames++;
+
+        if(fpsClock.getElapsedTime().asSeconds()>=1) {
+            calculatedFPS=frames;
+            frames=0;
+            fpsClock.restart();
+        }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         {
@@ -93,5 +115,6 @@ void GameEngine::run()
         }
 
         currentScene->run(time.asSeconds());
+
     }
 }

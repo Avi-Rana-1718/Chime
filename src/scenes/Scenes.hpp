@@ -53,7 +53,7 @@ void Scenes::sRender()
     {
         if (entity->sprite != NULL)
         {
-            entity->sprite->setScale(sf::Vector2f(entity->rotate * entity->scale, entity->scale));
+            entity->sprite->setScale(sf::Vector2f(entity->direction * entity->scale, entity->scale));
             window.draw(*(entity->sprite));
         }
         if (entity->text != NULL)
@@ -68,7 +68,28 @@ void Scenes::sRender()
         if (entity->sprite != NULL)
         {
             window.draw(*(entity->sprite));
-            entity->sprite->setScale(sf::Vector2f(entity->rotate * entity->scale, entity->scale));
+            // entity->sprite->setScale(sf::Vector2f(entity->direction * entity->scale, entity->scale));
+
+            if(false) {
+
+                // border
+                sf::FloatRect border = entity->sprite->getGlobalBounds();
+                sf::RectangleShape rec(border.getSize());
+                rec.setPosition(border.getPosition());
+                rec.setFillColor(sf::Color(0, 0, 0, 0));
+                rec.setOutlineColor(sf::Color::Red);
+                rec.setOutlineThickness(2.0);
+                window.draw(rec);
+
+                // center
+                sf::RectangleShape cRec(sf::Vector2f(10, 10));
+                cRec.setPosition(entity->sprite->getPosition().x, entity->sprite->getPosition().y);
+                cRec.setFillColor(sf::Color::Red);
+                window.draw(cRec);
+
+
+            }
+
         }
         if (entity->text != NULL)
         {
@@ -81,7 +102,7 @@ void Scenes::sRender()
     {
         if (entity->sprite != NULL)
         {
-            entity->sprite->setScale(sf::Vector2f(entity->rotate * entity->scale, entity->scale));
+            entity->sprite->setScale(sf::Vector2f(entity->direction * entity->scale, entity->scale));
             window.draw(*(entity->sprite));
         }
         if (entity->particles != NULL)
